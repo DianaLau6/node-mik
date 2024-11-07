@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración</title>
+</head>
+<body>
+    <h1>Bienvenido al Panel de Administración</h1>
+    <h3>Opciones:</h3>
+    <ul>
+        <li><a href="/user-management">Gestión de usuarios</a></li>
+        <li><a href="/ip-management">Gestión de IP</a></li>
+        <li><a href="/queues">Colas</a></li>
+    </ul>
+    <button onclick="logout()">Cerrar sesión</button>
+
+    <script>
+        // Función de cierre de sesión (redirigir al login)
+        function logout() {
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>

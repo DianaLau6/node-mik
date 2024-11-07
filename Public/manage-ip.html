@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar IP de Ether2</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        main {
+            width: 100%;
+            max-width: 600px;
+            background-color: #394377;
+            border-radius: 15px;
+            padding: 20px;
+            color: white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border: 1px solid #2f3a8b;
+            color: #2f3a8b;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        .input-field:focus {
+            border-color: #1e2a47;
+            background-color: #f1f1f1;
+        }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: inline-block;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .space-x-4 {
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            background-color: #6f42c1;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            background-color: #5a36a6;
+        }
+
+        .btn-gray {
+            background-color: #6c757d;
+        }
+
+        .btn-gray:hover {
+            background-color: #5a6268;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-container > div {
+            margin-bottom: 15px;
+        }
+
+        .form-container .checkbox-group {
+            display: flex;
+            align-items: center;
+        }
+
+    </style>
+</head>
+<body>
+    <main>
+        <h2>Cambiar IP de Ether2</h2>
+        <form id="changeIpForm" class="form-container">
+            <div class="checkbox-group">
+                <input type="checkbox" name="enabled" id="enabled" checked>
+                <label for="enabled">Enabled</label>
+            </div>
+
+            <div>
+                <label for="comment">Comment</label>
+                <input type="text" id="comment" name="comment" class="input-field" placeholder="Comentario (opcional)">
+            </div>
+
+            <div>
+                <label for="address">Address</label>
+                <input type="text" id="address" name="address" class="input-field" placeholder="Dirección IP (ej. 192.168.1.1/24)" required>
+            </div>
+
+            <div>
+                <label for="network">Network</label>
+                <input type="text" id="network" name="network" class="input-field" placeholder="Red (ej. 8.8.8.8)" required>
+            </div>
+
+            <div>
+                <label for="interface">Interface</label>
+                <select id="interface" name="interface" class="input-field" required>
+                    <option value="ether2">Ethernet2</option>
+                </select>
+            </div>
+
+            <div class="flex space-x-4">
+                <button type="submit" class="btn">OK</button>
+                <button type="button" class="btn btn-gray" onclick="window.location.href='/';">Cancel</button>
+            </div>
+        </form>
+    </main>
+
+    <script>
+        // Script para manejar el envío del formulario
+        document.getElementById('changeIpForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar el envío tradicional del formulario
+
+            const formData = {
+                comment: document.getElementById('comment').value,
+                address: document.getElementById('address').value,
+                network: document.getElementById('network').value,
+                interface: document.getElementById('interface').value
+            };
+
+            // Realizar la solicitud POST al servidor
+            fetch('/change-ip', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'IP cambiada exitosamente') {
+                    alert('La IP de ether2 ha sido cambiada correctamente.');
+                } else {
+                    alert('Error al cambiar la IP: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un problema con la conexión al servidor.');
+            });
+        });
+    </script>
+</body>
+</html>
