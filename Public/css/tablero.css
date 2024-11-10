@@ -1,0 +1,271 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #e0e0e0;
+}
+
+.navbar {
+    display: flex;
+    background-color: #3d3b6e;
+    padding: 10px;
+    color: white;
+}
+
+.navbar-btn {
+    background: none;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.navbar-btn.active {
+    background-color: #655eb0;
+    border-radius: 5px;
+}
+
+.container {
+    display: flex;
+}
+
+.sidebar {
+    width: 200px;
+    background-color: #8a88c7;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.sidebar-btn {
+    background: none;
+    border: none;
+    color: white;
+    text-align: left;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    width: 100%;
+}
+
+.sidebar-btn.active {
+    background-color: #655eb0;
+    border-radius: 5px;
+}
+
+.main-content {
+    flex-grow: 1;
+    background-color: #d9d9d9;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.toolbar-btn {
+    background-color: #655eb0;
+    border: none;
+    color: white;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.queue-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.queue-table th, .queue-table td {
+    border: 1px solid #8a88c7;
+    padding: 10px;
+    text-align: left;
+}
+
+.queue-table th {
+    background-color: #655eb0;
+    color: white;
+}
+
+.queue-table td {
+    background-color: #f0f0f0;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: #3d3b6e;
+    color: white;
+    padding: 10px;
+    font-size: 0.9em;
+}
+
+
+.form-container {
+    width: 300px;
+    background-color: #b3a7e8;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
+}
+
+.form-title {
+    font-size: 1.5em;
+    color: #ffffff;
+    margin-bottom: 20px;
+}
+
+.mikrotik-form .form-group {
+    margin-bottom: 10px;
+}
+
+.mikrotik-form label {
+    display: block;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.mikrotik-form input[type="text"],
+.mikrotik-form input[type="password"] {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.section-title {
+    font-size: 1.2em;
+    margin: 15px 0 10px;
+    color: #ffffff;
+}
+
+.status-info {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.form-buttons button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-buttons button[type="submit"] {
+    background-color: #4c4a79;
+    color: white;
+}
+
+.form-buttons button[type="button"] {
+    background-color: #333333;
+    color: white;
+}
+
+.user-management {
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+
+.toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.toolbar-btn {
+    background-color: #655eb0;
+    border: none;
+    color: white;
+    padding: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    border-radius: 5px;
+}
+
+.address-list-section,
+.user-list-section {
+    margin-bottom: 20px;
+}
+
+.section-header {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333333;
+}
+
+.address-table, .user-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.address-table th, .address-table td,
+.user-table th, .user-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.address-table th, .user-table th {
+    background-color: #a99cd9;
+    color: white;
+}
+
+.address-table tbody td,
+.user-table tbody td {
+    background-color: #f2f2f2;
+}
+
+.add-batch-btn {
+    background-color: #4c4a79;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1em;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.message {
+    display: none;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+}
+.success {
+    background-color: #38a169; /* Verde */
+}
+.error {
+    background-color: #e53e3e; /* Rojo */
+}
+
+.tablero-mik{
+    width: 100%;
+    height: 100vh;
+    background: #333333;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+}

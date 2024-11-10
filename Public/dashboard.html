@@ -3,17 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Panel de Administración</title>
+    <title>Queues</title>
+    <link rel="stylesheet" href="css/tablero.css">
 </head>
 <body>
-    <h1>Bienvenido al Panel de Administración</h1>
-    <h3>Opciones:</h3>
-    <ul>
-        <li><a href="/user-management">Gestión de usuarios</a></li>
-        <li><a href="/ip-management">Gestión de IP</a></li>
-        <li><a href="/queues">Colas</a></li>
-    </ul>
-    <button onclick="logout()">Cerrar sesión</button>
+    <div class="navbar">
+        <button class="navbar-btn active">Queues</button>
+        <button class="navbar-btn"> <a href="Usermanage.html">User Manager</a></button>
+        <button class="navbar-btn" > <a href="manage-ip.html">IP</a></button>
+        <button onclick="logout()">Cerrar sesión</button>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <button class="sidebar-btn active">Queue List</button>
+            <button class="sidebar-btn">Simple Queues</button>
+            <button class="sidebar-btn">Interface Queues</button>
+            <button class="sidebar-btn">Queues Tree</button>
+            <button class="sidebar-btn">Queues Types</button>
+            <button class="sidebar-btn">Exit</button>
+        </div>
+
+        <div class="main-content">
+            <div class="toolbar">
+                <button class="toolbar-btn">+</button>
+                <button class="toolbar-btn">-</button>
+                <button class="toolbar-btn">✓</button>
+                <button class="toolbar-btn">X</button>
+                <button class="toolbar-btn">⬇️</button>
+                <button class="toolbar-btn">🔍</button>
+                <button class="toolbar-btn">Reset Counters</button>
+                <button class="toolbar-btn">Reset All Counters</button>
+            </div>
+
+            <table class="queue-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Target</th>
+                        <th>Upload Max Limit</th>
+                        <th>Download Max Limit</th>
+                        <th>Packet Marks</th>
+                        <th>Total Max Limit</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Aquí puedes añadir filas si necesitas -->
+                </tbody>
+            </table>
+
+            <div class="footer">
+                <span>1 Item</span>
+                <span>3064 B queued</span>
+                <span>6 Packet queued</span>
+            </div>
+        </div>
+    </div>
+
+
+
 
     <script>
         // Función de cierre de sesión (redirigir al login)
@@ -23,3 +72,31 @@
     </script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

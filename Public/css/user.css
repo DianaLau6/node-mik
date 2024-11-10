@@ -1,0 +1,215 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+
+.container {
+    display: flex;
+    width: 90%;
+    max-width: 1200px;
+    background-color: #f0f0f8;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar {
+    background-color: #8974cc;
+    width: 300px;
+    padding: 20px;
+    color: #fff;
+}
+
+.sidebar h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.user-form label {
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.user-form input[type="text"],
+.user-form input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border: none;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.form-buttons button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #fff;
+}
+
+.form-buttons button:first-child {
+    background-color: #4caf50;
+}
+
+.form-buttons button:last-child {
+    background-color: #f44336;
+}
+
+.main {
+    flex: 1;
+    padding: 20px;
+    background-color: #e0e0f0;
+}
+
+.main h2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#add-user-button {
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px 10px;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 50%;
+    color: white;
+}
+
+.table-section h3 {
+    margin-top: 20px;
+    font-size: 18px;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+table th, table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.empty-row {
+    background-color: #b2a8e5;
+    height: 100px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Fondo y estilo general */
+.body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-image: url('background-fiber.jpg');
+    background-size: cover;
+    color: white;
+  }
+  
+  .container2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    position: relative;
+  }
+  
+  /* Estilos de los botones */
+  .btn2 {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #5a5fa8;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .back-btn2 {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+  }
+  
+  .accept-btn2 {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+  }
+  
+  /* Contenedor de tarjetas */
+  .card-container2 {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  /* Estilos de las tarjetas */
+  .card2 {
+    width: 150px;
+    height: 150px;
+    background-color: rgba(0, 0, 0, 0.7);
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+  }
+  
+  .card2 img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 10px;
+  }
+  
+  /* Títulos de las tarjetas */
+  .card-title2 {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* Estilos específicos para cada tarjeta */
+  .queues2 {
+    box-shadow: 0px 0px 15px rgba(90, 95, 168, 0.5);
+  }
+  
+  .ip2 {
+    box-shadow: 0px 0px 15px rgba(70, 130, 180, 0.5);
+  }
+  
+  .user-manager2 {
+    box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.5);
+  }
+  

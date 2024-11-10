@@ -4,22 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conexión a MikroTik</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <h1>Conexión a MikroTik</h1>
-    
-    <form id="connection-form">
-        <label for="host">Host (IP del MikroTik):</label>
-        <input type="text" id="host" name="host" required><br><br>
 
-        <label for="user">Usuario:</label>
-        <input type="text" id="user" name="user" required><br><br>
-
-        <label for="password">Contraseña:</label>
-        <input type="password" id="password" name="password" required><br><br>
-
-        <button type="submit">Conectar</button>
+    <form id="connection-form" class="login-form" >
+        <div class="imagen">
+            <img src="https://cdn4.iconfinder.com/data/icons/everyday-filled/64/person_man_profile_user-256.png" alt="login">
+            <span></span>
+        </div>
+        <div class="campos">
+            <div class="caja">
+                <label for="host">Host (Ip):</label>
+                <input type="text" id="host" name="host" required><br><br>
+            </div>
+            <div class="caja">
+                <label for="user">Usuario:</label>
+                <input type="text" id="user" name="user" required><br><br>
+            </div>
+            
+            <div class="caja">
+                <label for="password">Contraseña:</label>
+                <input type="password" id="password" name="password" required><br><br>
+            </div>
+        </div>
+        <button type="submit">LOGIN</button>
     </form>
 
     <p id="response-message"></p>

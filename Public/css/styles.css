@@ -1,0 +1,99 @@
+/* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-image: url(https://images.pexels.com/photos/373543/pexels-photo-373543.jpeg?auto=compress&amp;cs=tinysrgb&amp;dpr=2&amp;h=650&amp;w=1860);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    background-size: cover;
+    height: 100vh;
+
+}
+
+.login-form {
+    margin-top: 30px;
+    width: 400px;
+    height: 500px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-radius: 90px;
+    color: #ccc;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin: auto;
+}
+
+.login-form input {
+    width: 350px;
+    padding: 10px;
+    border-bottom: solid 1px #ccc;
+    border-radius: 4px;
+    background-color: transparent;
+    color: white;
+    font-size: 700;
+}
+
+.login-form button {
+    width: 200px;
+    height: 40px;
+    padding: 10px;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size:large;
+}
+
+.login-form button:hover {
+    background-color: #62438a;
+}
+
+.caja{
+    text-overflow: ellipsis;
+}
+
+img{
+    width: 120px;
+}
+
+.campos{
+    margin-top: 20px;
+}
+
+.User{
+    width: 100%;
+    height: 100vh;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+}
+
+.Interface-tabla , .Usuario-tabla {
+    width: 800px;
+    background-color: #655eb0;
+
+}
+
+.Interface-tabla th, .Usuario-tabla th {
+    background-color: #ffffff;
+    color: black;
+    font-size: smaller;
+
+}
+
+
+.Interface-tabla th, .Usuario-tabla td,
+.Usuario-tabla th, .Interface-tabla td {
+    padding: 8px;
+    margin: 0;
+    text-align: left;
+    font-size: 15px;
+    border: 1px solid black;
+}

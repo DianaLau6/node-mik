@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const RouterOSAPI = require('node-routeros').RouterOSAPI;
+const path = require("path")
 const app = express();
 const port = 3000;
 
@@ -9,6 +10,11 @@ app.use(bodyParser.json());
 
 // Servir los archivos estáticos (como el HTML)
 app.use(express.static('public'));
+app.use(express.static(path.join(__dirname, "public")));
+
+app.use('/Panel/css', express.static(path.join(__dirname, 'Publics/css'), { 
+    setHeaders: (res, path) => { 
+        if (path.endsWith('.css')) { res.setHeader('Content-Type', 'text/css'); } } }));
 
 // Ruta para servir login.html
 app.get('/', (req, res) => {
@@ -53,7 +59,7 @@ app.post('/change-ip', (req, res) => {
 
     // Crear la conexión con MikroTik
     const conn = new RouterOSAPI({
-        host: '192.168.1.79',  // IP de MikroTik
+        host: '192.168.0.106',  // IP de MikroTik
         user: 'admin',         // Usuario de MikroTik
         password: 'rosas',          // Contraseña de MikroTik
     });
@@ -120,7 +126,79 @@ function addNewIp(conn, address, network, comment, interface, res) {
     });
 }
 
+app.get('/User/Manejo', (req, res) => {
+    res.sendFile(__dirname + '/public/Usermanage.html');
+});
 
+// Ruta para manejar la conexión y agregar usuario en el User Manager
+const ALLOWED_GROUPS = ['read', 'write', 'full']; // Definir los grupos permitidos
+
+// Ruta para manejar la conexión y agregar usuario en el User Manager
+app.post('/add-user', (req, res) => {
+    const { enabled, comment, name, password, confirm_password, group, allowed_address, inactivity_timeout, inactivity_policy } = req.body;
+
+    // Verificar que la contraseña coincida con la confirmación
+    if (password !== confirm_password) {
+        return res.status(400).json({ message: 'La contraseña y su confirmación no coinciden' });
+    }
+
+    if (!ALLOWED_GROUPS.includes(group.toLowerCase())) {
+        return res.status(400).json({ message: 'El grupo ingresado no es válido. Por favor, elige un grupo permitido.' });
+    }
+    
+
+    console.log('Datos recibidos en el servidor:', req.body);
+    // Verificar si el grupo tiene algún espacio extra o valor inesperado
+    console.log(`Valor de grupo recibido: "${group}"`);
+
+
+    // Crear conexión con MikroTik
+    const conn = new RouterOSAPI({
+        host: '192.168.0.106',  // Cambiar a la IP de tu MikroTik
+        user: 'admin',          // Usuario de MikroTik
+        password: 'rosas',      // Contraseña de MikroTik
+    });
+
+    // Conectar al MikroTik
+    conn.connect()
+        .then(() => {
+            console.log('Conectado a MikroTik');
+
+            // Preparar los parámetros para añadir el usuario
+            const params = [
+                `=name=${name}`,
+                `=password=${password}`,
+                `=group=${group}`,
+                `=comment=${comment || ''}`,
+                `=disabled=${enabled ? 'no' : 'yes'}`, // Si "enabled" es true, usuario activo
+
+                `=inactivity-timeout=${inactivity_timeout || '00:10:00'}`,
+                `=inactivity-policy=${inactivity_policy || 'none'}`
+            ];
+
+            // Enviar el comando al MikroTik para añadir el usuario
+            return conn.write('/user/add', params);
+        })
+        .then(() => {
+            console.log('Usuario agregado correctamente');
+            conn.close();
+            res.json({ message: 'Usuario agregado exitosamente' });
+        })
+        .catch((err) => {
+            console.error('Error al agregar el usuario:', err);
+            conn.close();
+            res.status(500).json({ message: 'Error al agregar el usuario en MikroTik: ' + err.message });
+        });
+});
+
+
+app.get('/Users', (req, res) => {
+    res.sendFile(__dirname + '/public/Users.html');
+});
+
+app.get('/Tablero', (req, res) => {
+    res.sendFile(__dirname + '/public/Tablero.html');
+});
 // Iniciar el servidor
 app.listen(port, () => {
     console.log(`Servidor escuchando en http://localhost:${port}`);
