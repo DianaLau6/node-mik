@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 
 // Ruta para servir el dashboard.html después de la conexión exitosa
 app.get('/dashboard', (req, res) => {
-    res.sendFile(__dirname + '/public/dashboard.html');
+    res.sendFile(__dirname + '/public/Tablero.html');
 });
 
 // Ruta para manejar la conexión a MikroTik
@@ -55,13 +55,13 @@ app.get('/Ether-ip', (req, res) => {
 });
 
 app.post('/change-ip', (req, res) => {
-    const { comment, address, network, interface } = req.body;
+    const { comment, address, network, interface, enabled } = req.body;
 
     // Crear la conexión con MikroTik
     const conn = new RouterOSAPI({
-        host: '192.168.0.106',  // IP de MikroTik
+        host: '192.168.1.80',  // IP de MikroTik
         user: 'admin',         // Usuario de MikroTik
-        password: 'rosas',          // Contraseña de MikroTik
+        password: 'rosas',     // Contraseña de MikroTik
     });
 
     // Conectar al MikroTik
@@ -82,7 +82,7 @@ app.post('/change-ip', (req, res) => {
                     .then(() => {
                         console.log('IP actual eliminada correctamente');
                         // Ahora, agregamos la nueva IP
-                        addNewIp(conn, address, network, comment, interface, res);
+                        addNewIp(conn, address, network, comment, interface, enabled, res);
                     })
                     .catch((err) => {
                         console.error('Error al eliminar la IP actual:', err);
@@ -91,7 +91,7 @@ app.post('/change-ip', (req, res) => {
                     });
                 } else {
                     // Si no hay IP asignada, directamente agregamos la nueva IP
-                    addNewIp(conn, address, network, comment, interface, res);
+                    addNewIp(conn, address, network, comment, interface, enabled, res);
                 }
             })
             .catch((err) => {
@@ -106,8 +106,8 @@ app.post('/change-ip', (req, res) => {
         });
 });
 
-// Función para agregar la nueva IP
-function addNewIp(conn, address, network, comment, interface, res) {
+// Función para agregar la nueva IP y activar/desactivar la interfaz
+function addNewIp(conn, address, network, comment, interface, enabled, res) {
     conn.write('/ip/address/add', [
         `=interface=${interface}`,
         `=address=${address}`,
@@ -115,14 +115,24 @@ function addNewIp(conn, address, network, comment, interface, res) {
         `=comment=${comment}`
     ])
     .then(() => {
-        console.log('Nueva IP agregada correctamente');
-        conn.close();
-        res.json({ message: 'IP cambiada exitosamente' });
+
+
+        // Activar o desactivar la interfaz según el valor de enabled
+        const action = enabled ? 'enable' : 'disable';
+        conn.write(`/interface/${action}`, [
+            `=.id=${interface}`
+        ])
+        .then(() => {
+            conn.close();
+        })
+    .catch((err) => {
+            console.error(`Error al ${enabled ? 'activar' : 'desactivar'} la interfaz:`, err);
+            conn.close();
+
+        });
     })
     .catch((err) => {
-        console.error('Error al agregar la nueva IP:', err);
         conn.close();
-        res.status(500).json({ message: 'Error al agregar la nueva IP' });
     });
 }
 
@@ -147,14 +157,9 @@ app.post('/add-user', (req, res) => {
     }
     
 
-    console.log('Datos recibidos en el servidor:', req.body);
-    // Verificar si el grupo tiene algún espacio extra o valor inesperado
-    console.log(`Valor de grupo recibido: "${group}"`);
-
-
     // Crear conexión con MikroTik
     const conn = new RouterOSAPI({
-        host: '192.168.0.106',  // Cambiar a la IP de tu MikroTik
+        host: '192.168.1.80',  // Cambiar a la IP de tu MikroTik
         user: 'admin',          // Usuario de MikroTik
         password: 'rosas',      // Contraseña de MikroTik
     });
@@ -192,13 +197,171 @@ app.post('/add-user', (req, res) => {
 });
 
 
+app.get('/api/interfaces', (req, res) => {
+    const conn = new RouterOSAPI({
+        host: '192.168.1.80',  // Cambia a la IP de tu MikroTik
+        user: 'admin',         // Usuario de MikroTik
+        password: 'rosas',     // Contraseña de MikroTik
+    });
+
+    conn.connect()
+        .then(() => {
+            // Consultar todas las interfaces y direcciones IP
+            const interfacesPromise = conn.write('/interface/print');
+            const ipAddressesPromise = conn.write('/ip/address/print');
+            
+            return Promise.all([interfacesPromise, ipAddressesPromise]);
+        })
+        .then(([interfaces, ipAddresses]) => {
+            conn.close();
+            
+            // Mapear las direcciones IP a sus respectivas interfaces
+            const interfaceData = interfaces.map(intf => {
+                const ipInfo = ipAddresses.find(ip => ip.interface === intf.name) || {};
+                return {
+                    status: intf.running === 'true' ? 'Activo' : 'Inactivo',
+                    address: ipInfo.address || 'N/A',
+                    network: ipInfo.network || 'N/A',
+                    interface: intf.name,
+                    comment: intf.comment || ''
+                };
+            });
+
+            // Enviar la lista de interfaces al frontend con direcciones IP incluidas
+            res.json(interfaceData);
+        })
+        .catch((err) => {
+            console.error('Error al obtener las interfaces o direcciones IP:', err);
+            conn.close();
+            res.status(500).json({ message: 'Error al obtener las interfaces o direcciones IP' });
+        });
+});
+
+
+
 app.get('/Users', (req, res) => {
     res.sendFile(__dirname + '/public/Users.html');
+});
+
+app.get('/user-list', (req, res) => {
+    const conn = new RouterOSAPI({
+        host: '192.168.1.80',
+        user: 'admin',
+        password: 'rosas',
+    });
+
+    conn.connect()
+        .then(() => {
+            conn.write('/user/print')
+                .then((users) => {
+                    conn.close();
+                    res.json(users);
+                })
+                .catch((err) => {
+                    console.error('Error al obtener la lista de usuarios:', err);
+                    conn.close();
+                    res.status(500).json({ message: 'Error al obtener la lista de usuarios' });
+                });
+        })
+        .catch((err) => {
+            console.error('Error al conectar con MikroTik:', err);
+            res.status(500).json({ message: 'Error al conectar con MikroTik' });
+        });
 });
 
 app.get('/Tablero', (req, res) => {
     res.sendFile(__dirname + '/public/Tablero.html');
 });
+
+app.get('/queues', (req, res) => {
+    const conn = new RouterOSAPI({
+        host: '192.168.1.80',  // Cambia a la IP de tu MikroTik
+        user: 'admin',          // Usuario de MikroTik
+        password: 'rosas',      // Contraseña de MikroTik
+    });
+
+    conn.connect()
+        .then(() => {
+            // Consultar las colas simples
+            return conn.write('/queue/simple/print');
+        })
+        .then((queues) => {
+            conn.close();
+            res.json(queues);  // Enviar las colas al frontend
+        })
+        .catch((err) => {
+            console.error('Error al obtener las colas:', err);
+            conn.close();
+            res.status(500).json({ message: 'Error al obtener las colas' });
+        });
+});
+
+//eliminar colas
+
+app.post('/delete-queue', (req, res) => {
+    const { queueId } = req.body;  // ID de la cola a eliminar (por ejemplo, "*3")
+
+    const conn = new RouterOSAPI({
+        host: '192.168.1.80',  // Cambia a la IP de tu MikroTik
+        user: 'admin',          // Usuario de MikroTik
+        password: 'rosas',      // Contraseña de MikroTik
+    });
+
+    conn.connect()
+        .then(() => {
+            // Comando para eliminar la cola con el identificador correcto
+            return conn.write('/queue/simple/remove', [
+                { "=numbers": queueId }  // El identificador de la cola debe ser el que ves en Winbox (*3)
+            ]);
+        })
+        .then(() => {
+            conn.close();
+            res.json({ message: 'Cola eliminada correctamente' });
+        })
+        .catch((err) => {
+            console.error('Error al eliminar la cola:', err);
+            conn.close();
+            res.status(500).json({ message: 'Error al eliminar la cola' });
+        });
+});
+
+app.post('/toggle-queue', (req, res) => {
+    const { queueId, action } = req.body;  // Acción y ID de la cola
+
+    const conn = new RouterOSAPI({
+        host: '192.168.1.80',  // Cambia a la IP de tu MikroTik
+        user: 'admin',          // Usuario de MikroTik
+        password: 'rosas',      // Contraseña de MikroTik
+    });
+
+    conn.connect()
+        .then(() => {
+            let command = action === 'enable' ? '/queue/simple/set' : '/queue/simple/remove';
+            let params = [
+                `=.id=${queueId}`,
+                `=disabled=${action === 'disable' ? 'yes' : 'no'}`  // Desactivar o activar
+            ];
+
+            return conn.write(command, params);
+        })
+        .then(() => {
+            conn.close();
+            res.json({ message: `Cola ${action === 'enable' ? 'activada' : 'desactivada'} correctamente` });
+        })
+        .catch((err) => {
+            console.error('Error al modificar la cola:', err);
+            conn.close();
+            res.status(500).json({ message: 'Error al modificar la cola' });
+        });
+});
+
+
+
+
+
+
+
+
 // Iniciar el servidor
 app.listen(port, () => {
     console.log(`Servidor escuchando en http://localhost:${port}`);

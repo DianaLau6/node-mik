@@ -3,7 +3,6 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-image: url('background-fiber.jpg');
     background-size: cover;
     color: white;
   }
@@ -19,7 +18,8 @@ body {
   
   /* Estilos de los botones */
   .btn {
-    padding: 10px 20px;
+    width: 200px;
+    padding: 10px;
     border: none;
     border-radius: 5px;
     background-color: #5a5fa8;
@@ -28,6 +28,10 @@ body {
     font-size: 16px;
   }
   
+  .btn button:hover{
+    background-color: #6c6e8f;
+  }
+
   .back-btn {
     position: absolute;
     top: 20px;
@@ -45,18 +49,18 @@ body {
     display: flex;
     gap: 20px;
     justify-content: center;
-    align-items: center;
     margin-top: 50px;
+
   }
   
   /* Estilos de las tarjetas */
   .card {
-    width: 150px;
+    width: 250px;
     height: 150px;
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 15px;
     display: flex;
-    flex-direction: column;
+    flex-direction:column-reverse;
     align-items: center;
     justify-content: center;
     text-align: center;
@@ -65,8 +69,7 @@ body {
   }
   
   .card img {
-    width: 30px;
-    height: 30px;
+    width: 80px;
     margin-bottom: 10px;
   }
   
@@ -78,14 +81,15 @@ body {
   
   /* Estilos específicos para cada tarjeta */
   .queues {
-    box-shadow: 0px 0px 15px rgba(90, 95, 168, 0.5);
+    box-shadow: 0px 0px 15px rgba(46, 10, 10, 0.5);
   }
   
   .ip {
-    box-shadow: 0px 0px 15px rgba(70, 130, 180, 0.5);
+    box-shadow: 0px 0px 15px rgba(46, 10, 10, 0.5);
   }
   
   .user-manager {
-    box-shadow: 0px 0px 15px rgba(255, 215, 0, 0.5);
+    box-shadow: 0px 0px 15px rgba(46, 10, 10, 0.5);
   }
+  
   

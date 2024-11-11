@@ -7,18 +7,18 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f3f4f6;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             margin: 0;
+            background-size: cover;
         }
 
         main {
             width: 100%;
             max-width: 600px;
-            background-color: #394377;
+            background-color: rgba(57, 67, 119,0.8);
             border-radius: 15px;
             padding: 20px;
             color: white;
@@ -99,9 +99,24 @@
             align-items: center;
         }
 
+        .form-container input[type="text"],
+        .form-container input[type="password"]{
+            width: 90%;
+            padding: 10px;
+            
+        }
+
+        .form-container select{
+            width: 95%;
+        }
+
+        .form-container .input-field{
+            font-weight: 800;
+        }
+
     </style>
 </head>
-<body>
+<body background="https://png.pngtree.com/thumb_back/fw800/background/20231005/pngtree-illustrated-3d-infographics-depicting-a-network-s-three-dimensional-topology-with-image_13574545.png">
     <main>
         <h2>Cambiar IP de Ether2</h2>
         <form id="changeIpForm" class="form-container">
@@ -140,38 +155,39 @@
     </main>
 
     <script>
-        // Script para manejar el envío del formulario
         document.getElementById('changeIpForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Evitar el envío tradicional del formulario
+        event.preventDefault(); // Evitar el envío tradicional del formulario
 
-            const formData = {
-                comment: document.getElementById('comment').value,
-                address: document.getElementById('address').value,
-                network: document.getElementById('network').value,
-                interface: document.getElementById('interface').value
-            };
+        const formData = {
+            enabled: document.getElementById('enabled').checked, 
+            comment: document.getElementById('comment').value,
+            address: document.getElementById('address').value,
+            network: document.getElementById('network').value,
+            interface: document.getElementById('interface').value
+        };
 
-            // Realizar la solicitud POST al servidor
-            fetch('/change-ip', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.message === 'IP cambiada exitosamente') {
-                    alert('La IP de ether2 ha sido cambiada correctamente.');
-                } else {
-                    alert('Error al cambiar la IP: ' + data.message);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Hubo un problema con la conexión al servidor.');
-            });
+        // Realizar la solicitud POST al servidor
+        fetch('/change-ip', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'IP cambiada exitosamente') {
+                alert('La IP de ether2 ha sido cambiada correctamente.');
+            } else {
+                alert('Actualizado ');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Hubo un problema con la conexión al servidor.');
         });
+    });
+
     </script>
 </body>
 </html>

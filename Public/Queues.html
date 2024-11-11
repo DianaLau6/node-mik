@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Control</title>
+    <link rel="stylesheet" href="css/Queues.css">
+    <script>
+        // Función para obtener las colas desde el backend
+        async function fetchQueues() {
+            try {
+                const response = await fetch('/queues');
+                const queues = await response.json();
+                const tableBody = document.querySelector("#queues-table tbody");
+                tableBody.innerHTML = ""; // Limpiar la tabla antes de llenarla
+
+                queues.forEach(queue => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${queue.name}</td>
+                        <td>${queue.target}</td>
+                        <td>${queue['max-limit'].split('/')[0]}</td>
+                        <td>${queue['max-limit'].split('/')[1]}</td>
+                        <td>${queue['packet-marks'] || 'N/A'}</td>
+                        <td>${queue['total-max-limit'] || 'N/A'}</td>
+                        <td>
+                            <button onclick="deleteQueue('${queue.id}')">❌</button>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Error al obtener las colas:", error);
+            }
+        }
+        async function deleteQueue(queueId) {
+        try {
+            const response = await fetch('/delete-queue', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ queueId })  // Asegúrate de enviar el id correcto
+            });
+            const result = await response.json();
+            alert(result.message);  // Mostrar mensaje de éxito o error
+            fetchQueues();  // Actualizar la lista de colas
+        } catch (error) {
+            console.error("Error al eliminar la cola:", error);
+        }
+    }
+
+
+
+
+        // Cargar las colas al cargar la página
+        window.onload = function() {
+            fetchQueues();
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <div>
+                <span>Queues</span>
+            </div>
+            <div>
+                <a href="New-queues.html">
+                    <button class="icon-btn"> ➕ </button>
+                </a>
+                <button class="icon-btn" onclick="fetchQueues()">🔄</button>
+                <button>Resetear Contadores</button>
+                <button>Navegar</button>
+            </div>
+        </div>
+        <div class="centro">
+            <div class="sidebar">
+                <ul>
+                    <li><button><a href="#">Simple Queues</a></button></li>
+                    <li><button><a href="#">Interface Queues</a></button></li>
+                    <li><button><a href="#">Queues Tree</a></button></li>
+                    <li><button><a href="#">Queues Types</a></button></li>
+                    <li><button><a href="#">Exit</a></button></li>
+                </ul>
+            </div>
+            <div class="main-section">
+                <table id="queues-table">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Target</th>
+                            <th>Upload Max Limit</th>
+                            <th>Download Max Limit</th>
+                            <th>Packet Marks</th>
+                            <th>Total Max Limit</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Las colas se cargarán aquí mediante JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="bottom-bar">
+            <span>1 item</span>
+            <span>3064 B queued</span>
+            <span>6 Packet queued</span>
+        </div>
+    </div>
+</body>
+</html>

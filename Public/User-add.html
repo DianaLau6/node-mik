@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mikrotik User</title>
+    <link rel="stylesheet" href="css/tablero.css">
+</head>
+
+<body>
+    <div class="agregar-Usuario">
+        <div class="Add-form">
+            <h2 class="form-title">Agregar Usuario en MikroTik</h2>
+
+            <div id="message" class="message"></div>
+            <form class="mikrotik-formulario" action="/add-user" method="POST">
+                
+                <!-- Habilitar Usuario -->
+                <div class="form-group">
+                    <label><input type="checkbox" name="enabled"> Enabled</label>
+                </div>
+
+                <!-- Comentario -->
+                <div class="form-group">
+                    <label>Comment:</label>
+                    <input type="text" name="comment" placeholder="Agregar comentario">
+                </div>
+                
+                <!-- Nombre del Usuario -->
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" name="name" placeholder="Ingrese el nombre" required>
+                </div>
+
+                <!-- Contraseña -->
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="password" name="password" placeholder="Ingrese la contraseña" required>
+                </div>
+                
+                <!-- Confirmar Contraseña -->
+                <div class="form-group">
+                    <label>Confirm Password:</label>
+                    <input type="password" name="confirm_password" placeholder="Confirme la contraseña" required>
+                </div>
+
+                <!-- Grupo -->
+                <div class="form-group">
+                    <label for="group">Grupo</label>
+                    <select name="group" id="group">
+                        <option value="read" id="read">read</option>
+                        <option value="write" id="write">write</option>
+                        <option value="full" id="full">full</option>
+                    </select>
+                </div>
+
+                <!-- Dirección Permitida -->
+                <div class="form-group">
+                    <label>Allowed Address:</label>
+                    <input type="text" name="allowed_address" placeholder=" 0.0.0.0/24">
+                </div>
+
+                <!-- Tiempo de Inactividad -->
+                <div class="form-group">
+                    <label>Inactivity Timeout:</label>
+                    <input type="text" name="inactivity_timeout" placeholder=" 00:10:00" value="00:10:00">
+                </div>
+
+                <!-- Política de Inactividad -->
+                <div class="form-group">
+                    <label>Inactivity Policy:</label>
+                    <select name="inactivity_policy">
+                        <option value="none">None</option>
+                        <option value="kick">Kick</option>
+                        <option value="disable">Disable</option>
+                    </select>
+                </div>
+
+                <!-- Botones del Formulario -->
+                <div class="form-buttons">
+                    <button type="submit">Apply</button>
+                    <button type="button" onclick="window.location.href='/dashboard'">Cancel</button>
+                </div>
+        
+            </form>
+        </div>
+    </div>
+    <script>
+        // Verifica qué valores se están enviando en la solicitud
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evitar que el formulario se envíe por defecto
+
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData.entries());
+
+            console.log('Datos enviados:', data); // Verifica los valores enviados
+
+            // Enviar datos al servidor usando fetch o cualquier otra técnica
+            fetch('/add-user', {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                 {
+                    alert('El usuario agregado');
+                } 
+            })
+            .catch((error) => {
+                console.error('Error:', error.message);
+                alert('Hubo un problema con la conexión al servidor.');
+            });
+            
+        });
+
+    </script>
+</body>
+</html>

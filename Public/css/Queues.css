@@ -1,0 +1,268 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.top-bar {
+    background-color: #55518a;
+    color: white;
+    padding: 20px;
+    display: flex;
+    justify-content:space-between;
+}
+
+.sidebar {
+    background-color: #a5a0e9;
+    width: 15%;
+    padding: 15px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    height: 105.3%;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin-top: 30px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.sidebar button{
+    width: 100%;
+    height: 40px;
+    font-size: smaller;
+    font-weight: 800;
+    background-color: transparent;
+    border: none;
+}
+.main-section {
+    flex: 1;
+    width: 80%;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+.bottom-bar {
+    background-color: #55518a;
+    padding: 20px;
+    display: flex;
+    width: 1050px;
+    justify-content: space-between;
+    margin-left: 227px;
+}
+
+.centro{
+    width: 100%;
+    height: 90%;
+    display: flex;
+}
+
+.tabla th{
+    background-color: azure;
+    border: 2px solid black;
+}
+
+.tabla td{
+    border: 1px solid black;
+}
+
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.form-group label {
+    width: 120px;
+    font-weight: bold;
+}
+
+.form-group input {
+    margin-right: 5px;
+    padding: 5px;
+    width: 150px;
+}
+.caja1{
+    width: 700px;
+    margin-top: -10px;
+
+}
+
+.caja1 input{
+    width: 100%;
+}
+
+.target-section {
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+    background-color: rgba(233, 209, 209,0.7);
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+    width: 900px;
+    border-radius: 10px;
+}
+
+.target-section input{
+    width: 400px;
+    border-radius: 3px;
+}
+
+.upload-download {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 5px;
+    width: 55%;
+    margin-left: 100px;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.buttons button {
+    margin: 5px;
+    padding: 5px 15px;
+    background-color: #8cb0be;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    width: 150px;
+    border-radius: 10px;
+}
+
+.buttons button:hover {
+    background-color: #977171;
+}
+
+
+.sidebar2 {
+    background-color: #a5a0e9;
+    width: 15%;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+    height: 100%;
+}
+
+.sidebar2 ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+
+
+.sidebar2 ul li a {
+    text-decoration: none;
+    color: #070707;
+}
+
+.sidebar2 button{
+    width: 100%;
+    height: 70px;
+    font-size: smaller;
+    font-weight: 800;
+    background-color: transparent;
+    cursor: pointer;
+    border: none;
+    margin-top: 10px;
+}
+
+.sidebar2 .general{
+    border: 1px solid #5953a5;
+    background-color: #2c285f;
+    font-weight: 800;
+    color: wheat;
+}
+
+.sidebar2 button:hover{
+    border: 1px solid #5953a5;
+    background-color: #2c285f;
+    font-weight: 800;
+    color: wheat;
+}
+
+.top-bar2{
+    width: 100%;
+    background-color: #55518a;
+    text-align: center;
+}
+
+.principal{
+    border: 1px solid #070707;
+    width: 100%;
+}
+
+.secciones{
+    width: 90%;
+    padding: 20px;
+}
+
+.secciones-centro{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+}
+
+.mitad{
+    width: 40%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.mitad1{
+
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
+    
+}
+
+.form-grupo input{
+    width: 300px;
+    padding: 10px;
+    margin: 10px;
+}
+
+.secciones input{
+    width: 800px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
