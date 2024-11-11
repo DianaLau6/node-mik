@@ -59,7 +59,7 @@ app.post('/change-ip', (req, res) => {
 
     // Crear la conexión con MikroTik
     const conn = new RouterOSAPI({
-        host: '192.168.1.80',  // IP de MikroTik
+        host: '10.33.26.41',  // IP de MikroTik
         user: 'admin',         // Usuario de MikroTik
         password: 'rosas',     // Contraseña de MikroTik
     });
@@ -159,7 +159,7 @@ app.post('/add-user', (req, res) => {
 
     // Crear conexión con MikroTik
     const conn = new RouterOSAPI({
-        host: '192.168.1.80',  // Cambiar a la IP de tu MikroTik
+        host: '10.33.26.41',  // Cambiar a la IP de tu MikroTik
         user: 'admin',          // Usuario de MikroTik
         password: 'rosas',      // Contraseña de MikroTik
     });
@@ -199,7 +199,7 @@ app.post('/add-user', (req, res) => {
 
 app.get('/api/interfaces', (req, res) => {
     const conn = new RouterOSAPI({
-        host: '192.168.1.80',  // Cambia a la IP de tu MikroTik
+        host: '10.33.26.41',  // Cambia a la IP de tu MikroTik
         user: 'admin',         // Usuario de MikroTik
         password: 'rosas',     // Contraseña de MikroTik
     });
@@ -245,7 +245,7 @@ app.get('/Users', (req, res) => {
 
 app.get('/user-list', (req, res) => {
     const conn = new RouterOSAPI({
-        host: '192.168.1.80',
+        host: '10.33.26.41',
         user: 'admin',
         password: 'rosas',
     });
@@ -275,7 +275,7 @@ app.get('/Tablero', (req, res) => {
 
 app.get('/queues', (req, res) => {
     const conn = new RouterOSAPI({
-        host: '192.168.1.80',  // Cambia a la IP de tu MikroTik
+        host: '10.33.26.41',  // Cambia a la IP de tu MikroTik
         user: 'admin',          // Usuario de MikroTik
         password: 'rosas',      // Contraseña de MikroTik
     });
@@ -302,7 +302,7 @@ app.post('/delete-queue', (req, res) => {
     const { queueId } = req.body;  // ID de la cola a eliminar (por ejemplo, "*3")
 
     const conn = new RouterOSAPI({
-        host: '192.168.1.80',  // Cambia a la IP de tu MikroTik
+        host: '10.33.26.41',  // Cambia a la IP de tu MikroTik
         user: 'admin',          // Usuario de MikroTik
         password: 'rosas',      // Contraseña de MikroTik
     });
@@ -329,7 +329,7 @@ app.post('/toggle-queue', (req, res) => {
     const { queueId, action } = req.body;  // Acción y ID de la cola
 
     const conn = new RouterOSAPI({
-        host: '192.168.1.80',  // Cambia a la IP de tu MikroTik
+        host: '10.33.26.41',  // Cambia a la IP de tu MikroTik
         user: 'admin',          // Usuario de MikroTik
         password: 'rosas',      // Contraseña de MikroTik
     });
@@ -355,11 +355,38 @@ app.post('/toggle-queue', (req, res) => {
         });
 });
 
+app.post('/create-queue', (req, res) => {
+    const { name, target, dst, max_upload, max_download, burst_upload, burst_download, threshold_upload, threshold_download, time_upload, time_download, time } = req.body;
+    
+    const conn = new RouterOSAPI({
+        host: '10.33.26.41',  // IP de tu MikroTik
+        user: 'admin',         // Usuario de MikroTik
+        password: 'rosas'      // Contraseña de MikroTik
+    });
 
-
-
-
-
+    conn.connect()
+        .then(() => {
+            return conn.write('/queue/simple/add', [
+                { "=name": name },
+                { "=target": target },
+                { "=dst": dst || "" },
+                { "=max-limit": `${max_upload}/${max_download}` },
+                { "=burst-limit": `${burst_upload}/${burst_download}` },
+                { "=burst-threshold": `${threshold_upload}/${threshold_download}` },
+                { "=burst-time": `${time_upload}/${time_download}` },
+                { "=time": time || "" }
+            ]);
+        })
+        .then(() => {
+            conn.close();
+            res.json({ message: 'Cola creada correctamente' });
+        })
+        .catch((error) => {
+            console.error('Error al crear la cola:', error);
+            conn.close();
+            res.status(500).json({ message: 'Error al crear la cola' });
+        });
+});
 
 
 // Iniciar el servidor

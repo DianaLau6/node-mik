@@ -15,34 +15,35 @@
             <div class="sidebar2">
                 <ul>
                     <li> <a href="New-queues.html"><button class="general">General</button></a> </li>
-                    <li><a href="Queues-Advanced.html"><button>Avanzado</button></a> </li>
-                    <li><button>Estadísticas</button></li>
-                    <li><button>Tráfico</button></li>
+                    <li><a href="Queues-Advanced.html"><button>Avanced</button></li> </a>
+                    <li><button>Statistics</button></li>
+                    <li><button>Traffic</button></li>
                     <li><button>Total</button></li>
-                    <li><button>Estadísticas Totales</button></li>
-                    <li><button>Salir</button></li>
+                    <li><button>Total Statistics</button></li>
+                    <li><button>Exit</button></li>
                 </ul>
             </div>
             <div class="main-section">
                 <form>
                     <div class="caja1">
                         <div class="form-group">
-                            <label for="name">Nombre:</label>
+                            <label for="name">Name:</label>
                             <input type="text" id="name" name="name">
                         </div>
                         <div class="form-group">
-                            <label for="target">Objetivo:</label>
-                            <input type="text" id="target" name="target">
+                            <label for="target">Target (IP o Interfaz):</label>
+                            <input type="text" id="target" name="target" placeholder="192.168.1.1 o ether1">
                         </div>
+                        
                         <div class="form-group">
-                            <label for="dst">Destino:</label>
+                            <label for="dst">Dst:</label>
                             <input type="text" id="dst" name="dst">
                         </div>
                     </div>
                     <div class="target-section">
                         <div class="upload-download">
-                            <label>Subida Objetivo</label>
-                            <label>Descarga Objetivo</label>
+                            <label>Traget Upload</label>
+                            <label>Target Download</label>
                         </div>
                         <div class="form-group">
                             <label for="max-upload">Límite Máximo:</label>
@@ -75,20 +76,54 @@
                     </div>
 
                     <div class="buttons">
-                        <button type="button">OK</button>
-                        <button type="button">Cancelar</button>
-                        <button type="button">Aplicar</button>
-                        <button type="button">Deshabilitar</button>
-                        <button type="button">Comentario</button>
-                        <button type="button">Copiar</button>
-                        <button type="button">Eliminar</button>
+                        <button type="button" onclick="createQueue()">OK</button>
+                        <button type="button">Cancel</button>
+                        <button type="button">Apply</button>
+                        <button type="button">Disable</button>
+                        <button type="button">Comment</button>
+                        <button type="button">Copy</button>
+                        <button type="button">Remove</button>
                         <button type="button">Torch</button>
-                        <button type="button">Reiniciar Contadores</button>
-                        <button type="button">Reiniciar Todos los Contadores</button>
+                        <button type="button">Reset Counters</button>
+                        <button type="button">Reset All Counters</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+
+
+    <script>
+        async function createQueue() {
+            const data = {
+                name: document.getElementById("name").value,
+                target: document.getElementById("target").value,
+                dst: document.getElementById("dst").value,
+                max_upload: document.getElementById("max-upload").value,
+                max_download: document.getElementById("max-download").value,
+                burst_upload: document.getElementById("burst-upload").value,
+                burst_download: document.getElementById("burst-download").value,
+                threshold_upload: document.getElementById("threshold-upload").value,
+                threshold_download: document.getElementById("threshold-download").value,
+                time_upload: document.getElementById("time-upload").value,
+                time_download: document.getElementById("time-download").value,
+                time: document.getElementById("time").value,
+            };
+    
+            try {
+                const response = await fetch('/create-queue', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+    
+                const result = await response.json();
+                alert(result.message);  // Mensaje de confirmación
+            } catch (error) {
+                console.error("Error al crear la cola:", error);
+            }
+        }
+    </script>
+    
 </body>
 </html>
