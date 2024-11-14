@@ -27,6 +27,7 @@ app.get('/dashboard', (req, res) => {
 });
 
 // Ruta para manejar la conexión a MikroTik
+
 app.post('/connect', (req, res) => {
     const { host, user, password } = req.body;
 
@@ -34,21 +35,24 @@ app.post('/connect', (req, res) => {
     const conn = new RouterOSAPI({
         host: host,
         user: user,
-        password: password
+        password: password,
     });
 
-    // Intentar conectar
+    // Conectar al MikroTik
     conn.connect()
-        .then(() => {
-            console.log('Conexión exitosa');
-            conn.close(); // Cierra la conexión después de verificar
-            res.redirect('/dashboard'); // Redirige al dashboard si la conexión es exitosa
+       .then(() => {
+            console.log('Conectado a MikroTik');
+            // Redireccionar a la página de dashboard
+            res.redirect('/dashboard');
         })
-        .catch((err) => {
-            console.error('Error al conectar', err);
-            res.status(500).send({ message: 'Error al conectar a MikroTik: ' + err.message });
+       .catch((err) => {
+            console.error('Error al conectar a MikroTik:', err);
+            // Mostrar un error al conectar
+            res.send('Error al conectar a MikroTik');
         });
 });
+
+// Ruta para obtener los grupos de usuarios de MikroTik
 
 app.get('/Ether-ip', (req, res) => {
     res.sendFile(__dirname + '/public/manage-ip.html');
@@ -59,9 +63,9 @@ app.post('/change-ip', (req, res) => {
 
     // Crear la conexión con MikroTik
     const conn = new RouterOSAPI({
-        host: '10.33.26.41',  // IP de MikroTik
-        user: 'admin',         // Usuario de MikroTik
-        password: 'rosas',     // Contraseña de MikroTik
+        host: '10.33.26.108',  
+        user: 'admin',          // Usuario de MikroTik
+        password: 'admin',      // Contraseña de MikroTik
     });
 
     // Conectar al MikroTik
@@ -159,9 +163,9 @@ app.post('/add-user', (req, res) => {
 
     // Crear conexión con MikroTik
     const conn = new RouterOSAPI({
-        host: '10.33.26.41',  // Cambiar a la IP de tu MikroTik
+        host: '10.33.26.108',  
         user: 'admin',          // Usuario de MikroTik
-        password: 'rosas',      // Contraseña de MikroTik
+        password: 'admin',      // Contraseña de MikroTik 
     });
 
     // Conectar al MikroTik
@@ -199,9 +203,9 @@ app.post('/add-user', (req, res) => {
 
 app.get('/api/interfaces', (req, res) => {
     const conn = new RouterOSAPI({
-        host: '10.33.26.41',  // Cambia a la IP de tu MikroTik
-        user: 'admin',         // Usuario de MikroTik
-        password: 'rosas',     // Contraseña de MikroTik
+        host: '10.33.26.108',  
+        user: 'admin',          // Usuario de MikroTik
+        password: 'admin',      // Contraseña de MikroTik
     });
 
     conn.connect()
@@ -245,9 +249,9 @@ app.get('/Users', (req, res) => {
 
 app.get('/user-list', (req, res) => {
     const conn = new RouterOSAPI({
-        host: '10.33.26.41',
-        user: 'admin',
-        password: 'rosas',
+        host: '10.33.26.108',  
+        user: 'admin',          // Usuario de MikroTik
+        password: 'admin',      // Contraseña de MikroTik
     });
 
     conn.connect()
@@ -275,9 +279,9 @@ app.get('/Tablero', (req, res) => {
 
 app.get('/queues', (req, res) => {
     const conn = new RouterOSAPI({
-        host: '10.33.26.41',  // Cambia a la IP de tu MikroTik
+        host: '110.33.26.108',  
         user: 'admin',          // Usuario de MikroTik
-        password: 'rosas',      // Contraseña de MikroTik
+        password: 'admin',      // Contraseña de MikroTik
     });
 
     conn.connect()
@@ -302,9 +306,9 @@ app.post('/delete-queue', (req, res) => {
     const { queueId } = req.body;  // ID de la cola a eliminar (por ejemplo, "*3")
 
     const conn = new RouterOSAPI({
-        host: '10.33.26.41',  // Cambia a la IP de tu MikroTik
+        host: '10.33.26.108',  // Cambia a la IP de tu MikroTik
         user: 'admin',          // Usuario de MikroTik
-        password: 'rosas',      // Contraseña de MikroTik
+        password: 'admin',      // Contraseña de MikroTik
     });
 
     conn.connect()
@@ -329,9 +333,9 @@ app.post('/toggle-queue', (req, res) => {
     const { queueId, action } = req.body;  // Acción y ID de la cola
 
     const conn = new RouterOSAPI({
-        host: '10.33.26.41',  // Cambia a la IP de tu MikroTik
+        host: '10.33.26.108',  
         user: 'admin',          // Usuario de MikroTik
-        password: 'rosas',      // Contraseña de MikroTik
+        password: 'admin',      // Contraseña de MikroTik
     });
 
     conn.connect()
@@ -355,38 +359,52 @@ app.post('/toggle-queue', (req, res) => {
         });
 });
 
+
+
 app.post('/create-queue', (req, res) => {
     const { name, target, dst, max_upload, max_download, burst_upload, burst_download, threshold_upload, threshold_download, time_upload, time_download, time } = req.body;
-    
+
+    // Validación de parámetros requeridos
+    if (!name || !target || !max_upload || !max_download) {
+        return res.status(400).json({ message: 'Faltan parámetros requeridos para crear la cola.' });
+    }
+
     const conn = new RouterOSAPI({
-        host: '10.33.26.41',  // IP de tu MikroTik
-        user: 'admin',         // Usuario de MikroTik
-        password: 'rosas'      // Contraseña de MikroTik
+        host: '10.33.26.108',  
+        user: 'admin',          // Usuario de MikroTik
+        password: 'admin',      // Contraseña de MikroTik
     });
 
     conn.connect()
         .then(() => {
+            console.log('Conexión exitosa a RouterOS');
             return conn.write('/queue/simple/add', [
-                { "=name": name },
-                { "=target": target },
-                { "=dst": dst || "" },
-                { "=max-limit": `${max_upload}/${max_download}` },
-                { "=burst-limit": `${burst_upload}/${burst_download}` },
-                { "=burst-threshold": `${threshold_upload}/${threshold_download}` },
-                { "=burst-time": `${time_upload}/${time_download}` },
-                { "=time": time || "" }
+                `=name=${name}`,
+                `=target=${target}`,
+                `=dst=${dst || ""}`,
+                `=max-limit=${max_upload}/${max_download}`,
+                `=burst-limit=${burst_upload}/${burst_download}`,
+                `=burst-threshold=${threshold_upload}/${threshold_download}`,
+                `=burst-time=${time_upload}/${time_download}`,
             ]);
         })
         .then(() => {
+            console.log('Cola creada exitosamente');
             conn.close();
             res.json({ message: 'Cola creada correctamente' });
         })
-        .catch((error) => {
-            console.error('Error al crear la cola:', error);
+        .catch((err) => {
+            console.error('Error al crear la cola:', err);
             conn.close();
-            res.status(500).json({ message: 'Error al crear la cola' });
+            res.status(500).json({ message: 'Error al crear la cola', error: err.message });
         });
 });
+
+function handleError(err, conn, res, message = 'Error en la solicitud') {
+    console.error(message, err);
+    if (conn) conn.close();
+    res.status(500).json({ message });
+}
 
 
 // Iniciar el servidor

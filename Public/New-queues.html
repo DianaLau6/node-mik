@@ -27,13 +27,14 @@
                 <form>
                     <div class="caja1">
                         <div class="form-group">
-                            <label for="name">Name:</label>
-                            <input type="text" id="name" name="name">
+                            <label for="name">Nombre:</label>
+                            <input type="text" id="name" name="name" required placeholder="Nombre de la cola">
                         </div>
                         <div class="form-group">
                             <label for="target">Target (IP o Interfaz):</label>
-                            <input type="text" id="target" name="target" placeholder="192.168.1.1 o ether1">
+                            <input type="text" id="target" name="target" required   placeholder="192.168.1.1/24 o ether1">
                         </div>
+                        
                         
                         <div class="form-group">
                             <label for="dst">Dst:</label>
@@ -69,10 +70,7 @@
                             <input type="text" id="time-download" name="time_download">
                             <span>segundos</span>
                         </div>
-                        <div class="form-group">
-                            <label for="time">Tiempo:</label>
-                            <input type="text" id="time" name="time">
-                        </div>
+                        
                     </div>
 
                     <div class="buttons">
@@ -95,34 +93,40 @@
 
     <script>
         async function createQueue() {
-            const data = {
-                name: document.getElementById("name").value,
-                target: document.getElementById("target").value,
-                dst: document.getElementById("dst").value,
-                max_upload: document.getElementById("max-upload").value,
-                max_download: document.getElementById("max-download").value,
-                burst_upload: document.getElementById("burst-upload").value,
-                burst_download: document.getElementById("burst-download").value,
-                threshold_upload: document.getElementById("threshold-upload").value,
-                threshold_download: document.getElementById("threshold-download").value,
-                time_upload: document.getElementById("time-upload").value,
-                time_download: document.getElementById("time-download").value,
-                time: document.getElementById("time").value,
-            };
-    
-            try {
-                const response = await fetch('/create-queue', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(data)
-                });
-    
-                const result = await response.json();
-                alert(result.message);  // Mensaje de confirmación
-            } catch (error) {
-                console.error("Error al crear la cola:", error);
-            }
+        const data = {
+            name: document.getElementById("name").value,
+            target: document.getElementById("target").value,
+            dst: document.getElementById("dst").value || "0.0.0.0/0",
+            max_upload: document.getElementById("max-upload").value || "0",
+            max_download: document.getElementById("max-download").value || "0",
+            burst_upload: "0",
+            burst_download: "0",
+            threshold_upload: "0",
+            threshold_download: "0",
+            time_upload: "0",
+            time_download: "0",
+            bucket_size: "0.1",
+            priority: "8",
+            queue: "default-small",
+            parent: "none",
+            disabled: "no",
+            packet_marks: "",
+        };
+
+        try {
+            const response = await fetch('/create-queue', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+            alert(result.message);  // Mensaje de confirmación
+        } catch (error) {
+            console.error("Error al crear la cola:", error);
         }
+    }
+
     </script>
     
 </body>
